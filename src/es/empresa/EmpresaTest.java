@@ -1,27 +1,31 @@
 package es.empresa;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
  * Clase principal con el método main de la aplicación Empresa3A
  *
- * @version 3B 2.0
+ * @version 3B 3.0
  * @since 17-11-2020
  * @author Alejandro Pina
  */
-public class EmpresaTest{
-
-    private static String linea;
-    private static final Scanner SCAN = new java.util.Scanner(System.in);
-    public static ArrayList<Empleado> e;
-
+public class EmpresaTest {
+    
+    static List<Empleado> e = new ArrayList();
+    
+    /**
+     * Metodo main en el que se ejecuta el menu y todas sus opciones
+     */
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String opcion;
         Plantilla.crearEmpleados();
         do {
             System.out.println("\t\tM E N Ú");
             System.out.println("\t1) Alta de empleado");
-            System.out.println("\t2) Listar empleados");
+            System.out.println("\t2) Mostrar empleados");
             System.out.println("\t3) Subir sueldo");
             System.out.println("\t4) Totalizar sueldos");
             System.out.println("\t5) Descontar porcentaje");
@@ -29,10 +33,10 @@ public class EmpresaTest{
             System.out.println("\t7) Modificar empleado");
             System.out.println("\t8) Finalizar programa");
             System.out.print("Introduce una opción: ");
-
-            linea = SCAN.nextLine().toUpperCase();
-
-            switch (linea) {
+            
+            opcion = sc.nextLine();
+            
+            switch (opcion) {
                 case "1":
                     Plantilla.altaEmpleado();
                     break;
@@ -40,23 +44,28 @@ public class EmpresaTest{
                     Plantilla.listarEmpleados();
                     break;
                 case "3":
-                    Plantilla.subirSueldo();
+                    Plantilla.subirSueldo(Plantilla.buscarEmpleado());
                     break;
                 case "4":
-                    Plantilla.totalizarSueldos(EmpresaTest.e);
+                    Plantilla.totalizarSueldos((ArrayList<Empleado>) e);
                     break;
                 case "5":
-                    Plantilla.descontarPorcentaje();
+                    Plantilla.descontarPorcentaje(Plantilla.buscarEmpleado());
                     break;
                 case "6":
-                    Plantilla.borrarEmpleado();
+                    Plantilla.borrarEmpleado(Plantilla.buscarEmpleado());
                     break;
-
+                case "7":
+                    Plantilla.modificarEmpleado(Plantilla.buscarEmpleado());
+                    break;
+                case "8":
+                    System.exit(0);
+                
                 default:
-                    if (!linea.equals("8")) {
+                    if (!opcion.equals("8")) {
                         System.out.println(">> Opción incorrecta. Repita, por favor...");
                     }
             }
-        } while (!linea.equals("8"));
+        } while (!opcion.equals("8"));
     }
 }
