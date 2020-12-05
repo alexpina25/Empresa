@@ -122,7 +122,7 @@ public class Empleado extends Persona {
      */
     @Override
     public String toString() {
-        return super.toString() + this.fechaCon + ", "
+        return this.getClass().getSimpleName() + "--->    " + super.toString() + this.fechaCon + ", "
                 + NumberFormat.getCurrencyInstance().format((double) sueldo);
     }
 }

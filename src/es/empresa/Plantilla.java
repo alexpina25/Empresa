@@ -8,92 +8,161 @@ import java.util.Scanner;
  *
  * @author Alejandro Pina
  */
-public class Plantilla{
+public class Plantilla {
+
+    /**
+     * Metodo para añadir unos empleados por defecto al Array
+     */
     public static void crearEmpleados() {
         EmpresaTest.e.add(new Empleado("Ana", 'M', new Fecha(14, 10, 2015), 1000));
         EmpresaTest.e.add(new Jefe("Alfonso", 'H', new Fecha(10, 2, 2000), 1200, "rrhh"));
         EmpresaTest.e.add(new Empleado("Benito", 'H', new Fecha(1, 6, 2014), 1250));
-        EmpresaTest.e.add(new Jefe("Mónica", 'M', new Fecha(8, 4, 2012), 1300, "contabilidad"));
+        EmpresaTest.e.add(new Jefe("Monica", 'M', new Fecha(8, 4, 2012), 1300, "contabilidad"));
         EmpresaTest.e.add(new Empleado("Alfredo", 'H', new Fecha(1, 10, 2010), 995.20));
         EmpresaTest.e.add(new Empleado("Antonio", 'H', new Fecha(14, 5, 2010), 970.5));
         EmpresaTest.e.add(new Empleado("Montserrat", 'M', new Fecha(18, 1, 2010), 1095.21));
-        EmpresaTest.e.add(new Empleado("Julián", 'H', new Fecha(8, 6, 2011), 1200.46));
+        EmpresaTest.e.add(new Empleado("Julian", 'H', new Fecha(8, 6, 2011), 1200.46));
     }
 
     /**
-     * Suma y devuelve el total de sueldos de toda la plantilla de empleados
-     *
-     * @param e
-     * @return La suma de sueldos
+     * Metodo para sumar los sueldos de todos los empleados
+     * @param e ArrayList de empleados
+     * @return La suma de todos los empleados
      */
     public static double totalizarSueldos(ArrayList<Empleado> e) {
         double sumaSueldos = 0;
         for (int i = 0; i < e.size(); i++) {
             sumaSueldos += e.get(i).getSueldo();
         }
+        System.out.println("\tLa suma de todos los sueldos es: " + Math.round(sumaSueldos) + "€");
         return sumaSueldos;
     }
 
-    public static void descontarPorcentaje() {
-        // 1.) Seleccionar un empleado de la lista (array)
-        // 2.) Llamar al método descontarPorcentaje con el dado
-        Empleado empleado = new Empleado("X", 'Z', new Fecha(10, 10, 10), 500);
-        descontarPorcentaje(empleado); // Llama al método de abajo (sobrecargado)
-    }
-
     /**
-     * Descuenta un porcentaje al sueldo según sea empleado o jefe
-     *
-     * @param empleado Empleado a descontar el porcentaje
+     * Metodo para descontar un porcentaje del sueldo según el empleado sea jefe o empleado
+     * @param empleado Empleado a descontar un porcentaje del sueldo
      */
-    public static void descontarPorcentaje(final Empleado empleado) {
+    public static void descontarPorcentaje(Empleado empleado) {
+        double descuentoJ = 0.05;
+        double descuentoE = 0.10;
         if (empleado instanceof Jefe) {
-            empleado.setSueldo(empleado.getSueldo() * 0.95);
+            empleado.setSueldo(empleado.getSueldo() - (empleado.getSueldo() * descuentoJ));
         } else if (empleado instanceof Empleado) {
-            empleado.setSueldo(empleado.getSueldo() * 0.90);
+            empleado.setSueldo(empleado.getSueldo() - (empleado.getSueldo() * descuentoE));
         }
+        System.out.println("\tEl nuevo sueldo de " + empleado.getNombre() + " es " + empleado.getSueldo());
     }
 
     /**
-     * Añade un nuevo empleado
+     * Metodo para añadir al ArrayList un empleado
      */
     public static void altaEmpleado() {
-        System.out.println("Escribe el tipo de empleado que quieres dar de alta (jefe o empleado)");
         Scanner sc = new Scanner(System.in);
-        String opcion = sc.nextLine();
+        String opcion = "";
+        while (!opcion.equals("jefe") && !opcion.equals("empleado")) {
+            System.out.println("\tIntroduce \"jefe\" para dar de alta un jefe o \"empleado\" para dar de alta un empleado.");
+            opcion = sc.nextLine();
 
-        switch (opcion.toLowerCase()) {
-            case "jefe":
-                System.out.print("Introduce el nombre: ");
+            if (opcion.equals("jefe")) {
+                System.out.print("\tIntroduce el nombre: ");
+                String nombreJ = sc.nextLine();
+                System.out.print("\tIntroduce el sexo: ");
+                char sexoJ = sc.nextLine().charAt(0);
+                System.out.print("\tIntroduce la fecha de contratacion (dia, mes, año): ");
+                Fecha fechaConJ = new Fecha(sc.nextInt(), sc.nextInt(), sc.nextInt());
+                System.out.print("\tIntroduce el sueldo: ");
+                double sueldoJ = (double) sc.nextInt();
+                System.out.print("\tIntroduce el departamento: ");
+                String departamentoJ = sc.nextLine();
+                EmpresaTest.e.add(new Jefe(nombreJ, sexoJ, fechaConJ, sueldoJ, departamentoJ));
+
+            }
+
+            if (opcion.equals("empleado")) {
+                System.out.print("\tIntroduce el nombre: ");
                 String nombre = sc.nextLine();
-                System.out.print("Introduce el sexo: ");
+                System.out.print("\tIntroduce el sexo: ");
                 char sexo = sc.nextLine().charAt(0);
-                System.out.print("Introduce la fecha de contratacion (dia, mes, año): ");
+                System.out.print("\tIntroduce la fecha de contratacion (dia, mes, año): ");
                 Fecha fechaCon = new Fecha(sc.nextInt(), sc.nextInt(), sc.nextInt());
-                System.out.print("Introduce el sueldo: ");
-                double sueldo = (double)sc.nextInt();
-                System.out.print("Introduce el departamento: ");
-                String departamento = sc.nextLine();
-                EmpresaTest.e.add(new Jefe(nombre, sexo, fechaCon, sueldo, departamento));
-                break;
-            case "empleado":
-
-                break;
-            default:
-                throw new AssertionError("");
+                System.out.print("\tIntroduce el sueldo: ");
+                double sueldo = (double) sc.nextInt();
+                EmpresaTest.e.add(new Empleado(nombre, sexo, fechaCon, sueldo));
+            }
         }
     }
 
+    /**
+     * Metodo para mostrar en pantalla todos los empleados del ArrayList
+     */
     public static void listarEmpleados() {
+        System.out.println("\tHay un total de " + EmpresaTest.e.size() + " empleados.");
         EmpresaTest.e.forEach(empleado -> System.out.println(empleado));
     }
 
-    public static void subirSueldo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Metodo para eliminar un empleado del ArrayList
+     * @param empleado Empleado a eliminar del ArrayList
+     */
+    public static void borrarEmpleado(Empleado empleado) {
+        System.out.println("\tEl empleado " + empleado.getNombre() + "se ha borrado.");
+        EmpresaTest.e.remove(empleado);
+    }
+    
+    /**
+     * Metodo para modificar los datos de un empleado
+     * @param empleado Empleado a modificar sus datos
+     */
+    static void modificarEmpleado(Empleado empleado) {
+        System.out.println("\tIntroduce los datos del empleado.");
+        Scanner sc = new Scanner(System.in);
+        System.out.print("\tIntroduce el nombre: ");
+        String nombre = sc.nextLine();
+        System.out.print("\tIntroduce el sexo: ");
+        char sexo = sc.nextLine().charAt(0);
+        System.out.print("\tIntroduce la fecha de contratacion (dia, mes, año): ");
+        Fecha fechaCon = new Fecha(sc.nextInt(), sc.nextInt(), sc.nextInt());
+        System.out.print("\tIntroduce el sueldo: ");
+        double sueldo = (double) sc.nextInt();
+        int i = EmpresaTest.e.indexOf(empleado);
+        EmpresaTest.e.set(i, new Empleado(nombre, sexo, fechaCon, sueldo));
+    }
+    /**
+     * Metodo para aumentar el sueldo de un empleado 
+     * @param empleado Empleado a aumentarle el sueldo
+     */
+    static void subirSueldo(Empleado empleado) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\tIntroduce la cantidad a sumar al sueldo.");
+        int aumento = sc.nextInt();
+        if (empleado instanceof Jefe) {
+            System.out.println("\tNo se puede subir el sueldo a un jefe.");
+        } else {
+            empleado.setSueldo(empleado.getSueldo() + aumento);
+            System.out.println("\tEl nuevo sueldo de " + empleado.getNombre() + " es " + empleado.getSueldo() + "€");
+        }
     }
 
-    public static void borrarEmpleado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Metodo para buscar un empleado dentro del ArrayList
+     * @return
+     */
+    public static Empleado buscarEmpleado() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\tIntroduce el nombre del empleado a realizar la operación.");
+        String nombre = sc.nextLine();
+        Empleado empleado = null;
+        while (empleado == null) {
+            for (Empleado e : EmpresaTest.e) {
+                if (e.getNombre().equals(nombre)) {
+                    empleado = e;
+                }
+            }
+            if (empleado == null) {
+                System.out.println("Empleado no encontrado, por favor introduce otro nombre.");
+                nombre = sc.nextLine();
+            }
+        }
+        return empleado;
     }
-
 }
