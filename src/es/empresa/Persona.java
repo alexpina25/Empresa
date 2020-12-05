@@ -1,7 +1,7 @@
 package es.empresa;
 
 /**
- *
+ * Clase abstracta con los datos de una persona
  * @author Alejandro Pina
  */
 public abstract class Persona {
